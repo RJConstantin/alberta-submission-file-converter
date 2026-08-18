@@ -1,13 +1,632 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Alberta Submission File Converter</title>
-    <script type="module" crossorigin src="./assets/index-VXSHI3QG.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-Cip3oHIH.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coordinate System Converter</title>
+  <style>
+    :root{--ink:#172229;--muted:#67747a;--line:#dce3e1;--paper:#fbfcfa;--green:#1a6a59;--mint:#e4f0eb;--sand:#f2f0e9;--warn:#865a22;--warnbg:#fff7e9;--warnline:#ecdab9}
+    *{box-sizing:border-box} body{color:var(--ink);background:var(--paper);margin:0;font-family:Arial,Helvetica,sans-serif} button,input,select,textarea{font:inherit}.app-shell{min-height:100vh}
+    .topbar{border-bottom:1px solid var(--line);background:#fbfcfaf5;justify-content:space-between;align-items:center;height:70px;padding:0 clamp(24px,5vw,76px);display:flex}.brand{letter-spacing:-.2px;align-items:center;gap:11px;font-size:15px;font-weight:700;display:flex}.brand-mark{color:#fff;background:var(--green);border-radius:7px;place-items:center;width:27px;height:27px;font-family:Georgia,serif;font-size:18px;display:grid}.internal{color:var(--muted);align-items:center;gap:7px;font-size:13px;display:flex}.internal-dot{background:#4f9975;border-radius:50%;width:7px;height:7px}
+    .hero{background:var(--sand);border-bottom:1px solid var(--line);padding:74px clamp(24px,12vw,184px) 67px}.eyebrow,.section-label{color:var(--green);letter-spacing:1.35px;text-transform:uppercase;font-size:11px;font-weight:800}.hero h1{letter-spacing:-2.7px;max-width:740px;margin:14px 0 18px;font:700 clamp(39px,5.1vw,72px)/.98 Georgia,"Times New Roman",serif}.hero p{color:#516066;max-width:700px;margin:0;font-size:18px;line-height:1.55}
+    .workspace{grid-template-columns:208px minmax(0,760px) 285px;align-items:start;gap:36px;max-width:1340px;margin:0 auto;padding:52px 30px 85px;display:grid}.steps{padding-top:19px}.step{color:#899498;gap:11px;padding:0 0 30px;display:flex;position:relative}.step:before{content:"";border-left:1px solid #d5ddda;height:calc(100% - 21px);position:absolute;top:26px;left:12px}.step:last-child:before{display:none}.step span{background:var(--paper);z-index:1;border:1px solid #cbd4d1;border-radius:50%;flex:0 0 25px;place-items:center;width:25px;height:25px;font-size:11px;font-weight:700;display:grid}.step.active{color:var(--ink)}.step.active span{background:var(--green);color:#fff;border-color:var(--green)}.step strong{margin:2px 0 5px;font-size:13px;display:block}.step small{color:#879296;font-size:11px;line-height:1.35;display:block}
+    .form-area{gap:22px;display:grid}.form-card,.review-card,.summary{border:1px solid var(--line);background:#fff;border-radius:12px}.form-card{padding:29px 30px 31px}.form-card h2,.review-card h2{letter-spacing:-.65px;margin:11px 0 8px;font:700 26px/1.15 Georgia,"Times New Roman",serif}.section-copy{color:var(--muted);max-width:640px;margin:0 0 20px;font-size:13px;line-height:1.55}
+    .tabs{display:flex;gap:8px;margin-bottom:14px}.tab{cursor:pointer;border:1px solid var(--line);background:#fff;border-radius:6px;padding:8px 12px;color:#5e6a6d;font-size:12px;font-weight:700}.tab.active{border-color:var(--green);color:var(--green);background:#f4faf6}.hidden{display:none!important}.hidden-input{display:none}
+    .dropzone{cursor:pointer;text-align:center;color:#66747a;background:#fbfdfb;border:1.5px dashed #aabbb5;border-radius:8px;flex-direction:column;justify-content:center;align-items:center;gap:6px;width:100%;min-height:145px;transition:all .15s;display:flex}.dropzone:hover,.dropzone.dragging{border-color:var(--green);background:#f2f8f4}.dropzone strong{color:var(--ink);font-size:14px}.dropzone small{color:#849094;margin-top:6px;font-size:12px}.upload-arrow{color:var(--green);height:31px;font-size:28px;line-height:26px}.uploaded-name{color:var(--ink);font-weight:700;font-size:14px}.replace-file{color:var(--green);margin-top:6px;font-weight:700;font-size:12px}
+    textarea{width:100%;min-height:175px;border:1px solid #cfd9d5;border-radius:7px;padding:13px 14px;resize:vertical;color:var(--ink);background:#fff;font:12px/1.55 Consolas,"Courier New",monospace}textarea:focus,select:focus,input:focus{outline:2px solid #b9d7c9;outline-offset:1px;border-color:var(--green)}
+    .sample-row{display:flex;justify-content:space-between;gap:12px;margin-top:9px;color:#7a8682;font-size:11px}.link-button{border:0;background:transparent;color:var(--green);cursor:pointer;padding:0;font-weight:700}
+    .select-grid{grid-template-columns:1fr 1fr;gap:18px;margin-top:17px;display:grid}.select-grid label,.field-label{color:#4f5c61;font-size:12px;font-weight:700}.select-grid select,.column-grid select{appearance:none;width:100%;height:43px;color:var(--ink);background:linear-gradient(45deg,#0000 50%,#5e6c69 50%) calc(100% - 17px) 18px/5px 5px no-repeat,linear-gradient(135deg,#5e6c69 50%,#0000 50%) calc(100% - 12px) 18px/5px 5px no-repeat,#fff;border:1px solid #cfd9d5;border-radius:6px;margin-top:7px;padding:0 35px 0 12px;font-size:12px}.wide-select{grid-column:span 2}.column-grid{grid-template-columns:1fr 1fr auto;gap:14px;align-items:end;margin-top:19px;display:grid}.swap-button{height:43px;border:1px solid #cfd9d5;background:#fff;border-radius:6px;padding:0 13px;cursor:pointer;color:var(--green);font-size:12px;font-weight:700}.swap-button:hover{background:#f4faf6}
+    .data-preview{border:1px solid var(--line);border-radius:8px;overflow:auto;max-height:260px;margin-top:18px}.data-preview table,.results-table{border-collapse:collapse;width:100%;font-size:11px;white-space:nowrap}.data-preview th,.data-preview td,.results-table th,.results-table td{border-bottom:1px solid #edf0ee;border-right:1px solid #edf0ee;padding:8px 9px;text-align:left}.data-preview th,.results-table th{position:sticky;top:0;background:#f5f8f6;z-index:1;color:#53615d;font-weight:700}.data-preview tr:last-child td,.results-table tr:last-child td{border-bottom:0}.data-preview th:last-child,.data-preview td:last-child,.results-table th:last-child,.results-table td:last-child{border-right:0}.empty-preview{padding:26px;color:#88948f;text-align:center;font-size:12px}
+    .detection-card{margin-top:16px;padding:16px;border:1px solid #cfe0d7;background:#f5faf7;border-radius:8px;font-size:12px;line-height:1.55;color:#4d625a}.detection-card strong{color:var(--ink)}.detection-card .confidence{display:inline-block;margin-left:7px;padding:2px 7px;border-radius:10px;background:#dfeee6;color:var(--green);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.4px}.detection-card .ambiguous{background:#fff0d6;color:#805b20}.candidate-title{margin:18px 0 8px;color:var(--ink);font-size:13px;font-weight:700}.candidate-help{margin:0 0 10px;color:var(--muted);font-size:12px;line-height:1.45}.candidate-choices{display:grid;gap:9px}.candidate-button{width:100%;text-align:left;border:1px solid #cfd9d5;background:#fff;border-radius:8px;padding:12px 13px;cursor:pointer;color:var(--ink)}.candidate-button:hover{border-color:#8eb5a5;background:#f7fbf8}.candidate-button.selected{border:2px solid var(--green);background:#f2f8f4;padding:11px 12px}.candidate-button strong{display:block;font-size:12px;margin-bottom:4px}.candidate-button span{display:block;color:#64716d;font-size:11px;line-height:1.4}.choice-ok{margin-top:10px;color:var(--green);font-size:11px;font-weight:700}.output-box{margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}.output-box label{display:block;color:#4f5c61;font-size:12px;font-weight:700}.output-box select{appearance:none;width:100%;height:46px;color:var(--ink);background:linear-gradient(45deg,#0000 50%,#5e6c69 50%) calc(100% - 17px) 19px/5px 5px no-repeat,linear-gradient(135deg,#5e6c69 50%,#0000 50%) calc(100% - 12px) 19px/5px 5px no-repeat,#fff;border:1px solid #cfd9d5;border-radius:6px;margin-top:7px;padding:0 35px 0 12px;font-size:13px}.advanced-box{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}.advanced-box summary{cursor:pointer;color:var(--green);font-size:12px;font-weight:700;list-style:none}.advanced-box summary::-webkit-details-marker{display:none}.advanced-box summary:after{content:' +';}.advanced-box[open] summary:after{content:' −';}.advanced-inner{margin-top:13px}.advanced-note{color:#73807b;font-size:11px;line-height:1.45;margin:10px 0 0}.projection-note{color:#426158;background:#f5faf7;border:1px solid #d6e3dc;border-radius:7px;margin-top:16px;padding:12px 13px;font-size:12px;line-height:1.45}.notice{color:var(--warn);background:var(--warnbg);border:1px solid var(--warnline);border-radius:7px;padding:12px 14px;font-size:12px;line-height:1.45;margin-top:14px}.error-notice{color:#8a3830;background:#fff2f0;border-color:#ebc9c5}.checkbox-row{display:flex;align-items:center;gap:8px;margin-top:15px;color:#53605d;font-size:12px}.checkbox-row input{accent-color:var(--green)}
+    .review-card{background:#eef5f0;border-color:#cfddd5;justify-content:space-between;align-items:center;gap:20px;padding:25px 29px;display:flex}.review-card h2{margin:8px 0 5px;font-size:23px}.review-card p{color:#5d6d68;max-width:420px;margin:0;font-size:12px;line-height:1.45}.primary-button{background:var(--green);color:#fff;cursor:pointer;border:0;border-radius:6px;flex:none;padding:13px 18px;font-size:12px;font-weight:700;box-shadow:0 2px #00000014}.primary-button:hover{background:#135746}.primary-button:disabled{background:#8aaaa1;cursor:not-allowed}.secondary-button{background:#fff;color:var(--green);cursor:pointer;border:1px solid #bdd0c8;border-radius:6px;padding:10px 13px;font-size:12px;font-weight:700}
+    .results-card{padding:0;overflow:hidden}.results-head{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 22px;border-bottom:1px solid var(--line)}.results-head h2{margin:0;font:700 22px/1.15 Georgia,"Times New Roman",serif}.results-actions{display:flex;gap:8px}.results-wrap{overflow:auto;max-height:420px}.result-error{color:#983d35}
+    .summary{position:sticky;top:20px;overflow:hidden}.summary-head{border-bottom:1px solid var(--line);justify-content:space-between;padding:17px 18px;font-size:12px;font-weight:700;display:flex}.status-pill{color:#68736f;background:#f0f2ef;border-radius:10px;padding:3px 7px;font-size:10px}.summary-file{color:#556167;overflow-wrap:anywhere;min-height:72px;padding:17px 18px;font-size:12px;line-height:1.45}.summary-file strong{display:block;color:var(--ink);margin-bottom:5px}.summary-divider{border-top:1px solid var(--line)}.summary-row{color:var(--muted);justify-content:space-between;gap:10px;padding:11px 18px;font-size:11px;display:flex}.summary-row strong{color:var(--ink);text-align:right;font-size:11px}.checklist{padding:16px 18px 14px}.checklist h3{text-transform:uppercase;letter-spacing:1px;color:#71807a;margin:0 0 12px;font-size:11px}.checklist div{color:#55635f;align-items:flex-start;gap:8px;margin:9px 0;font-size:11px;line-height:1.35;display:flex}.checklist div span{width:15px;height:15px;color:var(--green);background:#d9ecdf;border-radius:50%;flex:0 0 15px;place-items:center;font-size:10px;font-weight:800;display:inline-grid}.privacy-note{color:#85908d;margin:0;padding:12px 18px 17px;font-size:10px;line-height:1.4;border-top:1px solid var(--line)}
+
+    .location-context{border:1px solid #d7e2dd;background:#f7faf8;border-radius:9px;padding:15px 16px;margin:17px 0 4px}.location-context label{display:block;color:#4f5c61;font-size:12px;font-weight:700}.location-context select{appearance:none;width:100%;max-width:360px;height:43px;color:var(--ink);background:linear-gradient(45deg,#0000 50%,#5e6c69 50%) calc(100% - 17px) 18px/5px 5px no-repeat,linear-gradient(135deg,#5e6c69 50%,#0000 50%) calc(100% - 12px) 18px/5px 5px no-repeat,#fff;border:1px solid #cfd9d5;border-radius:6px;margin-top:7px;padding:0 35px 0 12px;font-size:12px}.location-context p{margin:8px 0 0;color:#73807b;font-size:11px;line-height:1.45}
+    .from-to-grid{display:grid;grid-template-columns:1fr 42px 1fr;gap:14px;align-items:stretch;margin:18px 0}.conversion-card{border:1px solid var(--line);background:#fbfdfb;border-radius:10px;padding:18px}.conversion-kicker{display:block;color:var(--green);letter-spacing:1px;text-transform:uppercase;font-size:10px;font-weight:800;margin-bottom:8px}.big-select{appearance:none;width:100%;height:49px;color:var(--ink);background:linear-gradient(45deg,#0000 50%,#5e6c69 50%) calc(100% - 17px) 21px/5px 5px no-repeat,linear-gradient(135deg,#5e6c69 50%,#0000 50%) calc(100% - 12px) 21px/5px 5px no-repeat,#fff;border:1px solid #cfd9d5;border-radius:7px;padding:0 35px 0 12px;font-size:14px;font-weight:700}.conversion-help{min-height:34px;color:#73807b;font-size:11px;line-height:1.45;margin-top:9px}.from-to-arrow{display:grid;place-items:center;color:var(--green);font-size:22px;font-weight:700}.specific-note{color:#73807b;font-size:11px;line-height:1.45;margin:8px 0 0}.specific-select-label{display:block;color:#4f5c61;font-size:12px;font-weight:700}.specific-select-label select{appearance:none;width:100%;height:43px;color:var(--ink);background:linear-gradient(45deg,#0000 50%,#5e6c69 50%) calc(100% - 17px) 18px/5px 5px no-repeat,linear-gradient(135deg,#5e6c69 50%,#0000 50%) calc(100% - 12px) 18px/5px 5px no-repeat,#fff;border:1px solid #cfd9d5;border-radius:6px;margin-top:7px;padding:0 35px 0 12px;font-size:12px}
+    @media (max-width:1050px){.workspace{grid-template-columns:170px minmax(0,1fr);max-width:940px}.summary{grid-column:2;position:static}}@media (max-width:700px){.from-to-grid{grid-template-columns:1fr}.from-to-arrow{transform:rotate(90deg);height:24px}.topbar{height:59px}.internal{display:none}.brand{font-size:13px}.hero{padding:48px 24px 44px}.hero h1{letter-spacing:-1.8px;font-size:43px}.hero p{font-size:16px}.workspace{padding:28px 18px 50px;display:block}.steps{display:none}.form-area{gap:14px}.form-card{padding:24px 19px}.select-grid,.column-grid{grid-template-columns:1fr}.wide-select{grid-column:auto}.review-card{padding:22px 19px;display:block}.primary-button{width:100%;margin-top:18px}.summary{margin-top:16px}.results-head{align-items:flex-start;flex-direction:column}.results-actions{width:100%}.results-actions button{flex:1}}
+  </style>
+</head>
+<body>
+<main class="app-shell">
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">C</span><span>Coordinate System Converter</span></div>
+    <div class="internal"><span class="internal-dot"></span> Internal tool</div>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">Coordinate conversion</div>
+    <h1>Convert coordinate lists<br>without GIS software.</h1>
+    <p>Paste coordinates or Alberta legal land descriptions from Excel, or upload a CSV. Choose what you are converting from and to. If you do not know the input system, leave From on automatic and the page will work it out for you.</p>
+  </section>
+
+  <section class="workspace">
+    <aside class="steps">
+      <div class="step active"><span>1</span><div><strong>Add locations</strong><small>Paste coordinates, legal land descriptions, or upload a CSV.</small></div></div>
+      <div class="step active"><span>2</span><div><strong>Choose From and To</strong><small>Use simple coordinate system types.</small></div></div>
+      <div class="step active"><span>3</span><div><strong>Confirm if needed</strong><small>The page only asks when the input is ambiguous.</small></div></div>
+      <div class="step active"><span>4</span><div><strong>Convert</strong><small>Review and download the output.</small></div></div>
+    </aside>
+
+    <div class="form-area">
+      <section class="form-card">
+        <div class="section-label">01 &nbsp; Add location data</div>
+        <h2>Paste a table or upload a CSV.</h2>
+        <p class="section-copy">Copy directly from Excel, including the header row. Coordinates and Alberta Township System legal land descriptions are accepted. Extra columns such as Point, Name, Legal Location, or Notes are preserved in the output.</p>
+        <div class="tabs">
+          <button class="tab active" id="pasteTab" type="button">Paste from Excel</button>
+          <button class="tab" id="uploadTab" type="button">Upload CSV</button>
+        </div>
+        <div id="pastePane">
+          <textarea id="pasteInput" spellcheck="false" placeholder="Point\tEasting\tNorthing&#10;FB26-133\t504129.86\t6350567.32&#10;FB26-138\t503070.82\t6348390.23"></textarea>
+          <div class="sample-row"><span>Tab, comma, or semicolon separated tables are accepted.</span><button class="link-button" id="loadSample" type="button">Load example</button></div>
+        </div>
+        <div id="uploadPane" class="hidden">
+          <input class="hidden-input" type="file" id="fileInput" accept=".csv,.txt" />
+          <label class="dropzone" id="dropzone" for="fileInput">
+            <span class="upload-arrow">↑</span>
+            <strong id="fileLabel">Drop a CSV here or click to browse</strong>
+            <small>CSV or TXT table. The first row should contain column names.</small>
+          </label>
+        </div>
+        <div id="parseNotice" class="notice error-notice hidden"></div>
+        <div class="data-preview" id="inputPreview"><div class="empty-preview">No coordinate table loaded yet.</div></div>
+      </section>
+
+      <section class="form-card">
+        <div class="section-label">02 &nbsp; Choose conversion</div>
+        <h2>Choose what you are converting from and to.</h2>
+        <p class="section-copy">Tell the tool where the coordinates are expected to be, then choose the simple From and To formats. If you do not know the original format, leave <strong>From</strong> on <strong>Detect automatically</strong>. Exact datums, zones, and EPSG codes are optional.</p>
+
+        <div class="location-context">
+          <label for="expectedLocation">Where are these coordinates expected to be?</label>
+          <select id="expectedLocation">
+            <option value="alberta" selected>Alberta</option>
+            <option value="canada">Canada</option>
+            <option value="none">Outside Canada / do not assume a location</option>
+          </select>
+          <p id="locationHelp">Alberta is used to catch common longitude sign issues. For example, 114° can be safely treated as 114° W only when the matching negative longitude falls in Alberta.</p>
+        </div>
+
+        <div class="from-to-grid">
+          <div class="conversion-card">
+            <span class="conversion-kicker">From</span>
+            <select id="fromType" class="big-select">
+              <option value="AUTO" selected>Detect automatically</option>
+              <option value="geographic">Decimal Degrees</option>
+              <option value="10tm">Alberta 10TM</option>
+              <option value="utm">UTM</option>
+              <option value="3tm">Alberta 3TM</option>
+              <option value="ats">Alberta Township System (Third System / Legal Land Description)</option>
+            </select>
+            <div class="conversion-help" id="fromHelp">Best choice if the person using the tool does not know the original coordinate system.</div>
+          </div>
+          <div class="from-to-arrow">→</div>
+          <div class="conversion-card">
+            <span class="conversion-kicker">To</span>
+            <select id="toType" class="big-select">
+              <option value="10tm_m">Alberta 10TM (Meters)</option>
+              <option value="10tm_ft">Alberta 10TM (Feet)</option>
+              <option value="10tm_usft">Alberta 10TM (US Feet)</option>
+              <option value="3tm_m">Alberta 3TM (Meters)</option>
+              <option value="3tm_ft">Alberta 3TM (Feet)</option>
+              <option value="3tm_usft">Alberta 3TM (US Feet)</option>
+              <option value="utm_m">UTM (Meters)</option>
+              <option value="utm_ft">UTM (Feet)</option>
+              <option value="utm_usft">UTM (US Feet)</option>
+              <option value="dd" selected>Decimal Degrees (Degrees)</option>
+              <option value="dms">Degrees Minutes Seconds (Degrees)</option>
+              <option value="ddm">Degrees Decimal Minutes (Degrees)</option>
+              <option value="mgrs">MGRS</option>
+              <option value="usng">US National Grid</option>
+              <option value="ats">Alberta Township System (Third System / Legal Land Description)</option>
+            </select>
+            <div class="conversion-help" id="toHelp">Outputs standard decimal-degree longitude and latitude.</div>
+          </div>
+        </div>
+
+        <div class="detection-card" id="autoDetection"><strong>Waiting for coordinates.</strong> Paste a table or upload a CSV above.</div>
+        <div id="candidateArea" class="hidden">
+          <div class="candidate-title">Which approximate location is correct?</div>
+          <p class="candidate-help">The same numbers can sometimes fit more than one system. Pick the location that matches the project. You do not need to know the coordinate system name.</p>
+          <div class="candidate-choices" id="candidateChoices"></div>
+          <div class="choice-ok hidden" id="candidateConfirmed"></div>
+        </div>
+
+        <details class="advanced-box">
+          <summary>Specific types / fix detection</summary>
+          <div class="advanced-inner">
+            <div class="select-grid">
+              <label class="specific-select-label">Specific From type
+                <select id="sourceCrs"></select>
+              </label>
+              <label class="specific-select-label">Specific To type
+                <select id="targetCrs"></select>
+              </label>
+              <label>Detected Easting / Longitude column
+                <select id="xColumn"><option value="">Load data first</option></select>
+              </label>
+              <label>Detected Northing / Latitude column
+                <select id="yColumn"><option value="">Load data first</option></select>
+              </label>
+              <div style="align-self:end"><button class="swap-button" id="swapColumns" type="button">Swap detected columns</button></div>
+            </div>
+            <div id="atsColumnWrap" class="hidden" style="margin-top:14px">
+              <label class="field-label">Legal land description column
+                <select id="atsColumn" style="appearance:none;width:100%;height:43px;color:var(--ink);background:#fff;border:1px solid #cfd9d5;border-radius:6px;margin-top:7px;padding:0 12px;font-size:12px"><option value="">Load data first</option></select>
+              </label>
+            </div>
+            <p class="specific-note">Only use these controls if you know the exact system or the automatic detection needs correcting. The main From and To choices are enough for normal use.</p>
+            <p class="advanced-note">For survey-grade or sub-metre datum work, verify the geographic transformation in ArcGIS Pro.</p>
+          </div>
+        </details>
+        <div class="notice hidden" id="datumWarning"></div>
+      </section>
+
+      <section class="review-card">
+        <div><div class="section-label">03 &nbsp; Convert coordinates</div><h2 id="readyTitle">Add a coordinate table to continue.</h2><p id="readyCopy">Your original columns will be preserved. Converted coordinate columns are added to a new downloadable CSV.</p></div>
+        <button class="primary-button" id="convertButton" type="button" disabled>Convert coordinates <span>→</span></button>
+      </section>
+
+      <section class="form-card results-card hidden" id="resultsCard">
+        <div class="results-head">
+          <div><div class="section-label">Converted output</div><h2 id="resultsTitle">Conversion complete</h2></div>
+          <div class="results-actions"><button class="secondary-button" id="copyResults" type="button">Copy table</button><button class="primary-button" id="downloadCsv" type="button">Download CSV</button></div>
+        </div>
+        <div class="results-wrap" id="resultsWrap"></div>
+      </section>
+    </div>
+
+    <aside class="summary">
+      <div class="summary-head"><span>Conversion summary</span><span class="status-pill" id="statusPill">Waiting</span></div>
+      <div class="summary-file"><strong id="summaryInput">No data loaded</strong><span id="summarySub">Paste coordinates or upload a CSV.</span></div>
+      <div class="summary-divider"></div>
+      <div class="summary-row"><span>Rows</span><strong id="summaryRows">0</strong></div>
+      <div class="summary-row"><span>Source</span><strong id="summarySource">Not selected</strong></div>
+      <div class="summary-row"><span>Output</span><strong id="summaryTarget">Not selected</strong></div>
+      <div class="summary-row"><span>Easting / Longitude</span><strong id="summaryX">Not set</strong></div>
+      <div class="summary-row"><span>Northing / Latitude</span><strong id="summaryY">Not set</strong></div>
+      <div class="summary-divider"></div>
+      <div class="checklist"><h3>Included systems</h3><div><span>✓</span>Alberta 10TM Forest and Resource</div><div><span>✓</span>Alberta 3TM reference meridians</div><div><span>✓</span>NAD83 and NAD83(CSRS) UTM</div><div><span>✓</span>WGS84 UTM and Lat/Long</div><div><span>✓</span>Alberta Township System (ATS)</div></div>
+      <p class="privacy-note">Coordinate-system math runs in your browser. Alberta Township System conversions query the Government of Alberta public ATS map service so the legal land grid is based on the official provincial dataset rather than an approximation.</p>
+    </aside>
+  </section>
+</main>
+<script>
+(() => {
+  const GRS80 = {a: 6378137.0, rf: 298.257222101};
+  const WGS84 = {a: 6378137.0, rf: 298.257223563};
+  const crs = [
+    {group:'Geographic', code:'EPSG:4326', name:'WGS 84', type:'geographic', datum:'WGS84', ellipsoid:WGS84},
+    {group:'Geographic', code:'EPSG:4269', name:'NAD83', type:'geographic', datum:'NAD83', ellipsoid:GRS80},
+    {group:'Geographic', code:'EPSG:4617', name:'NAD83(CSRS)', type:'geographic', datum:'NAD83_CSRS', ellipsoid:GRS80},
+
+    {group:'Alberta 10TM', code:'EPSG:3400', name:'NAD83 / Alberta 10-TM (Forest)', type:'tm', datum:'NAD83', ellipsoid:GRS80, lon0:-115, lat0:0, k0:0.9992, x0:500000, y0:0},
+    {group:'Alberta 10TM', code:'EPSG:3401', name:'NAD83 / Alberta 10-TM (Resource)', type:'tm', datum:'NAD83', ellipsoid:GRS80, lon0:-115, lat0:0, k0:0.9992, x0:0, y0:0},
+    {group:'Alberta 10TM', code:'EPSG:3402', name:'NAD83(CSRS) / Alberta 10-TM (Forest)', type:'tm', datum:'NAD83_CSRS', ellipsoid:GRS80, lon0:-115, lat0:0, k0:0.9992, x0:500000, y0:0},
+    {group:'Alberta 10TM', code:'EPSG:3403', name:'NAD83(CSRS) / Alberta 10-TM (Resource)', type:'tm', datum:'NAD83_CSRS', ellipsoid:GRS80, lon0:-115, lat0:0, k0:0.9992, x0:0, y0:0},
+
+    {group:'Alberta 3TM - NAD83', code:'EPSG:3775', name:'NAD83 / Alberta 3TM ref merid 111 W', type:'tm', datum:'NAD83', ellipsoid:GRS80, lon0:-111, lat0:0, k0:0.9999, x0:0, y0:0},
+    {group:'Alberta 3TM - NAD83', code:'EPSG:3776', name:'NAD83 / Alberta 3TM ref merid 114 W', type:'tm', datum:'NAD83', ellipsoid:GRS80, lon0:-114, lat0:0, k0:0.9999, x0:0, y0:0},
+    {group:'Alberta 3TM - NAD83', code:'EPSG:3777', name:'NAD83 / Alberta 3TM ref merid 117 W', type:'tm', datum:'NAD83', ellipsoid:GRS80, lon0:-117, lat0:0, k0:0.9999, x0:0, y0:0},
+    {group:'Alberta 3TM - NAD83', code:'EPSG:3801', name:'NAD83 / Alberta 3TM ref merid 120 W', type:'tm', datum:'NAD83', ellipsoid:GRS80, lon0:-120, lat0:0, k0:0.9999, x0:0, y0:0},
+    {group:'Alberta 3TM - NAD83(CSRS)', code:'EPSG:3779', name:'NAD83(CSRS) / Alberta 3TM ref merid 111 W', type:'tm', datum:'NAD83_CSRS', ellipsoid:GRS80, lon0:-111, lat0:0, k0:0.9999, x0:0, y0:0},
+    {group:'Alberta 3TM - NAD83(CSRS)', code:'EPSG:3780', name:'NAD83(CSRS) / Alberta 3TM ref merid 114 W', type:'tm', datum:'NAD83_CSRS', ellipsoid:GRS80, lon0:-114, lat0:0, k0:0.9999, x0:0, y0:0},
+    {group:'Alberta 3TM - NAD83(CSRS)', code:'EPSG:3781', name:'NAD83(CSRS) / Alberta 3TM ref merid 117 W', type:'tm', datum:'NAD83_CSRS', ellipsoid:GRS80, lon0:-117, lat0:0, k0:0.9999, x0:0, y0:0},
+    {group:'Alberta 3TM - NAD83(CSRS)', code:'EPSG:3802', name:'NAD83(CSRS) / Alberta 3TM ref merid 120 W', type:'tm', datum:'NAD83_CSRS', ellipsoid:GRS80, lon0:-120, lat0:0, k0:0.9999, x0:0, y0:0},
+  ];
+  for (let z=10; z<=15; z++) crs.push({group:'UTM - NAD83', code:`EPSG:${26900+z}`, name:`NAD83 / UTM zone ${z}N`, type:'tm', datum:'NAD83', ellipsoid:GRS80, lon0:6*z-183, lat0:0, k0:0.9996, x0:500000, y0:0});
+  const csrsUtmCodes={10:3157,11:2955,12:2956,13:2957,14:3158,15:3159};
+  for (let z=10; z<=15; z++) crs.push({group:'UTM - NAD83(CSRS)', code:`EPSG:${csrsUtmCodes[z]}`, name:`NAD83(CSRS) / UTM zone ${z}N`, type:'tm', datum:'NAD83_CSRS', ellipsoid:GRS80, lon0:6*z-183, lat0:0, k0:0.9996, x0:500000, y0:0});
+  for (let z=10; z<=15; z++) crs.push({group:'UTM - WGS 84', code:`EPSG:${32600+z}`, name:`WGS 84 / UTM zone ${z}N`, type:'tm', datum:'WGS84', ellipsoid:WGS84, lon0:6*z-183, lat0:0, k0:0.9996, x0:500000, y0:0});
+
+  const ATS_SOURCE={code:'ATS',name:'Alberta Township System (Third System of Survey)',type:'ats',datum:'NAD83',group:'ATS'};
+  const ATS_SERVICE='https://geospatial.alberta.ca/titan/rest/services/base/alberta_township_system/MapServer';
+  const $ = id => document.getElementById(id);
+  const state={headers:[], rows:[], sourceName:'', resultHeaders:[], resultRows:[], detection:null, selectedSourceCode:null, sourceSpecific:false, targetSpecific:false, atsColumn:null};
+  const els={pasteTab:$('pasteTab'),uploadTab:$('uploadTab'),pastePane:$('pastePane'),uploadPane:$('uploadPane'),pasteInput:$('pasteInput'),fileInput:$('fileInput'),dropzone:$('dropzone'),fileLabel:$('fileLabel'),parseNotice:$('parseNotice'),inputPreview:$('inputPreview'),expectedLocation:$('expectedLocation'),locationHelp:$('locationHelp'),fromType:$('fromType'),toType:$('toType'),fromHelp:$('fromHelp'),toHelp:$('toHelp'),sourceCrs:$('sourceCrs'),targetCrs:$('targetCrs'),xColumn:$('xColumn'),yColumn:$('yColumn'),swapColumns:$('swapColumns'),datumWarning:$('datumWarning'),autoDetection:$('autoDetection'),candidateArea:$('candidateArea'),candidateChoices:$('candidateChoices'),candidateConfirmed:$('candidateConfirmed'),convertButton:$('convertButton'),readyTitle:$('readyTitle'),resultsCard:$('resultsCard'),resultsTitle:$('resultsTitle'),resultsWrap:$('resultsWrap'),copyResults:$('copyResults'),downloadCsv:$('downloadCsv'),statusPill:$('statusPill'),summaryInput:$('summaryInput'),summarySub:$('summarySub'),summaryRows:$('summaryRows'),summarySource:$('summarySource'),summaryTarget:$('summaryTarget'),summaryX:$('summaryX'),summaryY:$('summaryY'),atsColumnWrap:$('atsColumnWrap'),atsColumn:$('atsColumn')};
+
+  function friendlyCrsName(c){
+    if(c.code==='EPSG:4326')return 'Decimal Degrees (GPS / Google Maps) — WGS 84';
+    if(c.code==='EPSG:4269')return 'Decimal Degrees — NAD83';
+    if(c.code==='EPSG:4617')return 'Decimal Degrees — NAD83(CSRS)';
+    if(c.code==='EPSG:3400')return 'Alberta 10TM Forest — NAD83';
+    if(c.code==='EPSG:3402')return 'Alberta 10TM Forest — NAD83(CSRS)';
+    if(c.code==='EPSG:3401')return 'Alberta 10TM Resource — NAD83';
+    if(c.code==='EPSG:3403')return 'Alberta 10TM Resource — NAD83(CSRS)';
+    return c.name;
+  }
+  function populateCrs(select, defaultCode, allowAuto=false){
+    const groups={}; crs.forEach(c=>{(groups[c.group] ||= []).push(c)});
+    select.innerHTML='';
+    if(allowAuto){const o=document.createElement('option');o.value='AUTO';o.textContent='Automatic detection';o.selected=defaultCode==='AUTO';select.appendChild(o)}
+    Object.entries(groups).forEach(([g,items])=>{const og=document.createElement('optgroup');og.label=g;items.forEach(c=>{const o=document.createElement('option');o.value=c.code;o.textContent=`${friendlyCrsName(c)} [${c.code}]`;if(c.code===defaultCode)o.selected=true;og.appendChild(o)});select.appendChild(og)});
+  }
+  populateCrs(els.sourceCrs,'AUTO',true); populateCrs(els.targetCrs,'EPSG:4326');
+  const getCrs=code=>crs.find(c=>c.code===code);
+  function crsTypeKey(c){if(!c)return '';if(c.type==='ats')return 'ats';if(c.type==='geographic')return 'geographic';if(c.group==='Alberta 10TM')return '10tm';if(c.group.startsWith('UTM'))return 'utm';if(c.group.startsWith('Alberta 3TM'))return '3tm';return ''}
+  function typeLabel(v){return ({AUTO:'Detect automatically',geographic:'Decimal Degrees','10tm':'Alberta 10TM',utm:'UTM','3tm':'Alberta 3TM',ats:'Alberta Township System (ATS)'})[v]||v}
+  const OUTPUT_SPECS={
+    '10tm_m':{label:'Alberta 10TM (Meters)',family:'10tm',kind:'projected',unit:'Meters',factor:1},
+    '10tm_ft':{label:'Alberta 10TM (Feet)',family:'10tm',kind:'projected',unit:'Feet',factor:1/0.3048},
+    '10tm_usft':{label:'Alberta 10TM (US Feet)',family:'10tm',kind:'projected',unit:'US Feet',factor:3937/1200},
+    '3tm_m':{label:'Alberta 3TM (Meters)',family:'3tm',kind:'projected',unit:'Meters',factor:1},
+    '3tm_ft':{label:'Alberta 3TM (Feet)',family:'3tm',kind:'projected',unit:'Feet',factor:1/0.3048},
+    '3tm_usft':{label:'Alberta 3TM (US Feet)',family:'3tm',kind:'projected',unit:'US Feet',factor:3937/1200},
+    'utm_m':{label:'UTM (Meters)',family:'utm',kind:'projected',unit:'Meters',factor:1},
+    'utm_ft':{label:'UTM (Feet)',family:'utm',kind:'projected',unit:'Feet',factor:1/0.3048},
+    'utm_usft':{label:'UTM (US Feet)',family:'utm',kind:'projected',unit:'US Feet',factor:3937/1200},
+    dd:{label:'Decimal Degrees (Degrees)',family:'geographic',kind:'dd'},
+    dms:{label:'Degrees Minutes Seconds (Degrees)',family:'geographic',kind:'dms'},
+    ddm:{label:'Degrees Decimal Minutes (Degrees)',family:'geographic',kind:'ddm'},
+    mgrs:{label:'MGRS',family:'utm',kind:'mgrs'},
+    usng:{label:'US National Grid',family:'utm',kind:'usng'},
+    ats:{label:'Alberta Township System (Third System / Legal Land Description)',family:'ats',kind:'ats'}
+  };
+  function outputSpec(){return OUTPUT_SPECS[els.toType.value]||OUTPUT_SPECS.dd}
+  function outputLabel(){return outputSpec().label}
+  function outputKeyForCrs(c){const k=crsTypeKey(c);return k==='geographic'?'dd':k==='10tm'?'10tm_m':k==='utm'?'utm_m':k==='3tm'?'3tm_m':'dd'}
+  const locationProfiles={
+    alberta:{label:'Alberta',lonMin:-120.05,lonMax:-109.95,latMin:48.95,latMax:60.05},
+    canada:{label:'Canada',lonMin:-141.1,lonMax:-52.4,latMin:41.5,latMax:83.2},
+    none:{label:'No location assumption'}
+  };
+  function expectedProfile(){return locationProfiles[els.expectedLocation?.value||'alberta']||locationProfiles.alberta}
+  function pointFitsExpectedLocation(lon,lat){const p=expectedProfile();if(!Number.isFinite(lon)||!Number.isFinite(lat))return false;if(!('lonMin' in p))return false;return lon>=p.lonMin&&lon<=p.lonMax&&lat>=p.latMin&&lat<=p.latMax}
+  function normalizeGeographicInput(lon,lat){
+    if(!Number.isFinite(lon)||!Number.isFinite(lat))return {lon,lat,corrected:false};
+    if(lon>0&&pointFitsExpectedLocation(-lon,lat))return {lon:-lon,lat,corrected:true};
+    return {lon,lat,corrected:false};
+  }
+  function locationContextLabel(){return expectedProfile().label}
+  function activeSource(){if(els.fromType.value==='ats'||state.selectedSourceCode==='ATS'||(state.detection&&state.detection.isAts))return ATS_SOURCE;if(state.sourceSpecific&&els.sourceCrs.value!=='AUTO')return getCrs(els.sourceCrs.value);if(state.selectedSourceCode)return getCrs(state.selectedSourceCode);if(state.detection&&!state.detection.requiresChoice)return getCrs(state.detection.sourceCode);return null}
+  function firstLonLat(){const src=activeSource();if(!src||!state.rows.length||els.xColumn.value===''||els.yColumn.value==='')return null;const xi=Number(els.xColumn.value),yi=Number(els.yColumn.value);for(const r of state.rows.slice(0,25)){let x=num(r[xi]),y=num(r[yi]);if(!Number.isFinite(x)||!Number.isFinite(y))continue;try{if(src.type==='geographic'){const n=normalizeGeographicInput(x,y);x=n.lon;y=n.lat}const ll=toGeographic(x,y,src);if(Number.isFinite(ll[0])&&Number.isFinite(ll[1]))return ll}catch{}}return null}
+  function utmZoneFor(lon,lat){
+    let z=Math.floor((lon+180)/6)+1;z=Math.max(1,Math.min(60,z));
+    if(lat>=56&&lat<64&&lon>=3&&lon<12)z=32;
+    if(lat>=72&&lat<84){if(lon>=0&&lon<9)z=31;else if(lon<21)z=33;else if(lon<33)z=35;else if(lon<42)z=37}
+    return z;
+  }
+  function dynamicWgs84Utm(zone){return {group:'UTM - WGS 84',code:`EPSG:${32600+zone}`,name:`WGS 84 / UTM zone ${zone}N`,type:'tm',datum:'WGS84',ellipsoid:WGS84,lon0:6*zone-183,lat0:0,k0:0.9996,x0:500000,y0:0}}
+  function dynamicNad83Utm(zone){return {group:'UTM - NAD83',code:`EPSG:${26900+zone}`,name:`NAD83 / UTM zone ${zone}N`,type:'tm',datum:'NAD83',ellipsoid:GRS80,lon0:6*zone-183,lat0:0,k0:0.9996,x0:500000,y0:0}}
+  function defaultTargetForType(type){if(type==='geographic')return getCrs('EPSG:4326');if(type==='10tm')return getCrs('EPSG:3400');const ll=firstLonLat();if(type==='utm'){let z=12;if(ll)z=utmZoneFor(ll[0],ll[1]);return getCrs(`EPSG:${26900+z}`)||dynamicNad83Utm(z)}if(type==='3tm'){let lon0=-114;if(ll){lon0=[-111,-114,-117,-120].reduce((a,b)=>Math.abs(ll[0]-a)<=Math.abs(ll[0]-b)?a:b)}const code={[-111]:3775,[-114]:3776,[-117]:3777,[-120]:3801}[lon0];return getCrs(`EPSG:${code}`)}return getCrs('EPSG:4326')}
+  function resolvedTarget(){const spec=outputSpec();if(spec.kind==='ats')return ATS_SOURCE;if(state.targetSpecific)return getCrs(els.targetCrs.value);if(spec.kind==='mgrs'||spec.kind==='usng'){const ll=firstLonLat();const z=ll?utmZoneFor(ll[0],ll[1]):12;return dynamicWgs84Utm(z)}return defaultTargetForType(spec.family)}
+  function refreshSimpleHelp(){
+    els.fromHelp.textContent=els.fromType.value==='AUTO'?'Best choice if the person using the tool does not know the original coordinate system.':els.fromType.value==='ats'?'Accepts legal land descriptions such as 14-32-95-11-W4M, NE-9-73-17-W4M, or SEC-15 TWP-73 RGE-17 MER-4. The output coordinate represents the centre of the official ATS parcel.':`The page will look for ${typeLabel(els.fromType.value)} coordinates and determine the coordinate columns automatically.`;
+    const spec=outputSpec(),t=resolvedTarget();
+    if(spec.kind==='dd')els.toHelp.textContent='Outputs longitude and latitude as decimal degrees.';
+    else if(spec.kind==='dms')els.toHelp.textContent='Outputs longitude and latitude as degrees, minutes, and seconds.';
+    else if(spec.kind==='ddm')els.toHelp.textContent='Outputs longitude and latitude as degrees and decimal minutes.';
+    else if(spec.kind==='mgrs')els.toHelp.textContent='Outputs a Military Grid Reference System location. The UTM zone is selected automatically.';
+    else if(spec.kind==='usng')els.toHelp.textContent='Outputs a US National Grid style reference. The grid zone is selected automatically.';
+    else if(spec.kind==='ats')els.toHelp.textContent='Outputs the Alberta Township System legal land description containing each point, using the Government of Alberta ATS grid.';
+    else if(spec.family==='utm')els.toHelp.textContent=`The UTM zone is chosen automatically from the project location. Output units: ${spec.unit}.`;
+    else if(spec.family==='3tm')els.toHelp.textContent=`The closest Alberta 3TM reference meridian is chosen automatically. Output units: ${spec.unit}.`;
+    else els.toHelp.textContent=`Uses ${t?friendlyCrsName(t):'the standard Alberta 10TM Forest system'} by default. Output units: ${spec.unit}.`;
+  }
+
+
+  function switchTab(which){const paste=which==='paste';els.pasteTab.classList.toggle('active',paste);els.uploadTab.classList.toggle('active',!paste);els.pastePane.classList.toggle('hidden',!paste);els.uploadPane.classList.toggle('hidden',paste)}
+  els.pasteTab.onclick=()=>switchTab('paste'); els.uploadTab.onclick=()=>switchTab('upload');
+
+  function detectDelimiter(text){const first=(text.split(/\r?\n/).find(l=>l.trim())||''); if(first.includes('\t'))return '\t'; const commas=(first.match(/,/g)||[]).length, semis=(first.match(/;/g)||[]).length; return semis>commas?';':','}
+  function parseDelimitedLine(line, delim){
+    if(delim==='\t') return line.split('\t').map(v=>v.trim());
+    const out=[];let cur='',quoted=false;for(let i=0;i<line.length;i++){const ch=line[i];if(ch==='"'){if(quoted&&line[i+1]==='"'){cur+='"';i++}else quoted=!quoted}else if(ch===delim&&!quoted){out.push(cur.trim());cur=''}else cur+=ch}out.push(cur.trim());return out;
+  }
+  function looksNumeric(v){if(v==null||String(v).trim()==='')return false; const n=Number(String(v).trim().replace(/,/g,'')); return Number.isFinite(n)}
+  function validAtsParts(o){
+    if(!o)return false;
+    if(!Number.isInteger(o.m)||o.m<4||o.m>6)return false;
+    if(!Number.isInteger(o.rge)||o.rge<1||o.rge>30)return false;
+    if(!Number.isInteger(o.twp)||o.twp<1||o.twp>126)return false;
+    if(!Number.isInteger(o.sec)||o.sec<1||o.sec>36)return false;
+    if(o.ls!=null&&(!Number.isInteger(o.ls)||o.ls<1||o.ls>16))return false;
+    if(o.qs!=null&&!['NE','NW','SE','SW'].includes(o.qs))return false;
+    return true;
+  }
+  function parseAtsDescription(raw){
+    let original=String(raw??'').trim();if(!original)return null;
+    let s=original.toUpperCase().replace(/[–—]/g,'-').replace(/\bWEST\s+OF\s+THE\s+/g,'W').replace(/\s+/g,' ').trim();
+    const getNum=(patterns)=>{for(const re of patterns){const m=s.match(re);if(m)return Number(m[1])}return null};
+    const getText=(patterns)=>{for(const re of patterns){const m=s.match(re);if(m)return m[1]}return null};
+    const labelled={
+      m:getNum([/\bMER(?:IDIAN)?\s*[-:#]?\s*([456])\b/,/\bW\s*([456])\s*M?\b/]),
+      rge:getNum([/\bRGE|RANGE/].map(()=>/(?:\bRGE\b|\bRANGE\b)\s*[-:#]?\s*(\d{1,2})\b/)),
+      twp:getNum([/(?:\bTWP\b|\bTOWNSHIP\b)\s*[-:#]?\s*(\d{1,3})\b/]),
+      sec:getNum([/(?:\bSEC\b|\bSECTION\b)\s*[-:#]?\s*(\d{1,2})\b/]),
+      ls:getNum([/(?:\bLSD\b|\bLS\b|\bLEGAL\s+SUBDIVISION\b)\s*[-:#]?\s*(\d{1,2})\b/]),
+      qs:getText([/(?:\bQS\b|\bQUARTER\b)\s*[-:#]?\s*(NE|NW|SE|SW)\b/])
+    };
+    if(labelled.m!=null&&labelled.rge!=null&&labelled.twp!=null&&labelled.sec!=null){
+      const o={...labelled,level:labelled.ls!=null?'lsd':labelled.qs?'quarter':'section',original};if(validAtsParts(o))return o;
+    }
+    let compact=s.replace(/\bMER(?:IDIAN)?\b/g,'').replace(/\bRGE\b|\bRANGE\b|\bTWP\b|\bTOWNSHIP\b|\bSEC\b|\bSECTION\b|\bLSD\b|\bLS\b/g,'').replace(/\s*W\s*([456])\s*M\b/g,'-$1').replace(/\s*W\s*([456])\b/g,'-$1').replace(/\s+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
+    let m=compact.match(/^(NE|NW|SE|SW)-(\d{1,2})-(\d{1,3})-(\d{1,2})-([456])$/);
+    if(m){const o={qs:m[1],sec:+m[2],twp:+m[3],rge:+m[4],m:+m[5],ls:null,level:'quarter',original};if(validAtsParts(o))return o}
+    m=compact.match(/^(\d{1,2})-(\d{1,2})-(\d{1,3})-(\d{1,2})-([456])$/);
+    if(m){const o={ls:+m[1],sec:+m[2],twp:+m[3],rge:+m[4],m:+m[5],qs:null,level:'lsd',original};if(validAtsParts(o))return o}
+    m=compact.match(/^(\d{1,2})-(\d{1,3})-(\d{1,2})-([456])$/);
+    if(m){const o={sec:+m[1],twp:+m[2],rge:+m[3],m:+m[4],ls:null,qs:null,level:'section',original};if(validAtsParts(o))return o}
+    return null;
+  }
+  function atsColumnScore(i){
+    const rows=state.rows.slice(0,80);if(!rows.length)return -1;let good=0;for(const r of rows)if(parseAtsDescription(r[i]))good++;
+    const fraction=good/rows.length;let score=fraction*100;const h=String(state.headers[i]||'').toLowerCase();if(/legal|land|ats|lsd|township|location/.test(h))score+=30;return fraction>=.5?score:-1;
+  }
+  function detectAtsColumn(){let best={i:null,score:-1};state.headers.forEach((_,i)=>{const score=atsColumnScore(i);if(score>best.score)best={i,score}});return best.i}
+  function parseTable(text, name='Pasted table'){
+    hideNotice(); const lines=text.replace(/^\uFEFF/,'').split(/\r?\n/).filter(l=>l.trim().length); if(!lines.length){clearData();return}
+    const delim=detectDelimiter(text); let parsed=lines.map(l=>parseDelimitedLine(l,delim)); const width=Math.max(...parsed.map(r=>r.length)); parsed=parsed.map(r=>{while(r.length<width)r.push('');return r});
+    let headers; const first=parsed[0]; const singleAtsRow=first.length===1&&!!parseAtsDescription(first[0]); const hasHeader=singleAtsRow?false:first.some(v=>!looksNumeric(v));
+    if(hasHeader){headers=first.map((v,i)=>v||`Column_${i+1}`);parsed=parsed.slice(1)} else headers=Array.from({length:width},(_,i)=>`Column_${i+1}`);
+    const seen={}; headers=headers.map((h,i)=>{let base=h.trim()||`Column_${i+1}`;let n=(seen[base]||0)+1;seen[base]=n;return n===1?base:`${base}_${n}`});
+    state.headers=headers; state.rows=parsed.filter(r=>r.some(v=>String(v).trim()!=='')); state.sourceName=name; populateColumns(); detectInput(); renderInputPreview(); updateSummary(); els.resultsCard.classList.add('hidden'); updateReady();
+  }
+  function clearData(){state.headers=[];state.rows=[];state.sourceName='';state.detection=null;state.selectedSourceCode=null;state.atsColumn=null;populateColumns();renderDetection();els.inputPreview.innerHTML='<div class="empty-preview">No coordinate table loaded yet.</div>';refreshSimpleHelp();updateSummary();updateReady()}
+  function showNotice(msg){els.parseNotice.textContent=msg;els.parseNotice.classList.remove('hidden')} function hideNotice(){els.parseNotice.classList.add('hidden');els.parseNotice.textContent=''}
+
+  let pasteTimer; els.pasteInput.addEventListener('input',()=>{clearTimeout(pasteTimer);pasteTimer=setTimeout(()=>parseTable(els.pasteInput.value,'Pasted table'),250)});
+  $('loadSample').onclick=()=>{els.pasteInput.value='Point\tEasting\tNorthing\nFB26-133\t504129.86\t6350567.32\nFB26-138\t503070.82\t6348390.23\nFB26-139\t503380.44\t6348666.00';parseTable(els.pasteInput.value,'Example table')};
+  function handleFile(file){if(!file)return; if(!/\.(csv|txt)$/i.test(file.name)){showNotice('Use a CSV or TXT table for this version. You can also copy the table directly from Excel and paste it into the page.');return}const reader=new FileReader();reader.onload=()=>{els.fileLabel.textContent=file.name;parseTable(String(reader.result||''),file.name)};reader.onerror=()=>showNotice('The file could not be read.');reader.readAsText(file)}
+  els.fileInput.onchange=e=>handleFile(e.target.files[0]); ['dragenter','dragover'].forEach(ev=>els.dropzone.addEventListener(ev,e=>{e.preventDefault();els.dropzone.classList.add('dragging')})); ['dragleave','drop'].forEach(ev=>els.dropzone.addEventListener(ev,e=>{e.preventDefault();els.dropzone.classList.remove('dragging')})); els.dropzone.addEventListener('drop',e=>handleFile(e.dataTransfer.files[0]));
+
+  function headerScore(header,kind){const h=String(header||'').trim();const pats=kind==='x'?[[/^easting$/i,35],[/^east$/i,30],[/^x$/i,30],[/^longitude$/i,35],[/^lon$/i,32],[/easting/i,22],[/longitude/i,22],[/utm.?x/i,18]]:[[ /^northing$/i,35],[/^north$/i,30],[/^y$/i,30],[/^latitude$/i,35],[/^lat$/i,32],[/northing/i,22],[/latitude/i,22],[/utm.?y/i,18]];for(const [p,score] of pats)if(p.test(h))return score;return 0}
+  function columnStats(i){const vals=state.rows.slice(0,80).map(r=>num(r[i])).filter(Number.isFinite);if(!vals.length)return {fraction:0,median:NaN,min:NaN,max:NaN};const a=[...vals].sort((x,y)=>x-y);const median=a[Math.floor(a.length/2)];return {fraction:vals.length/Math.min(80,state.rows.length||1),median,min:a[0],max:a[a.length-1],vals}}
+  function plausibleAlberta(lon,lat){return Number.isFinite(lon)&&Number.isFinite(lat)&&lon>=-120.6&&lon<=-109.3&&lat>=48.7&&lat<=60.3}
+  function familyKey(c){if(c.type==='geographic')return 'Geographic longitude/latitude';if(c.code==='EPSG:3400'||c.code==='EPSG:3402')return 'Alberta 10TM Forest';if(c.code==='EPSG:3401'||c.code==='EPSG:3403')return 'Alberta 10TM Resource';if(c.group.startsWith('Alberta 3TM'))return `Alberta 3TM ${Math.abs(c.lon0)}W`;if(c.group.startsWith('UTM'))return `UTM Zone ${Math.round((c.lon0+183)/6)}N`;return c.name}
+  function representativeCode(key){const preferred={'Geographic longitude/latitude':'EPSG:4326','Alberta 10TM Forest':'EPSG:3400','Alberta 10TM Resource':'EPSG:3401'};if(preferred[key])return preferred[key];const item=crs.find(c=>familyKey(c)===key && c.datum==='NAD83')||crs.find(c=>familyKey(c)===key);return item?item.code:'EPSG:3400'}
+  function pairValueScore(xi,yi){const xs=columnStats(xi),ys=columnStats(yi);if(xs.fraction<.55||ys.fraction<.55)return -999;let score=headerScore(state.headers[xi],'x')+headerScore(state.headers[yi],'y');const hx=String(state.headers[xi]||'').trim(),hy=String(state.headers[yi]||'').trim();if(/^(id|fid|oid|objectid|index|row|number|no\.?|num)$/i.test(hx))score-=100;if(/^(id|fid|oid|objectid|index|row|number|no\.?|num)$/i.test(hy))score-=100;const x=Math.abs(xs.median),y=Math.abs(ys.median);if(ys.median>4500000&&ys.median<7500000&&x>1000&&x<1500000)score+=75;if(xs.median>=-130&&xs.median<=-100&&ys.median>=45&&ys.median<=65)score+=95;if(y<1000000&&x>4500000)score-=55;return score}
+  function scoreCrsForPair(c,xi,yi){const sample=state.rows.slice(0,Math.min(12,state.rows.length));let good=0,total=0;for(const r of sample){const x=num(r[xi]),y=num(r[yi]);if(!Number.isFinite(x)||!Number.isFinite(y))continue;total++;try{const ll=toGeographic(x,y,c);if(plausibleAlberta(ll[0],ll[1]))good++}catch{}}if(!total)return -999;let score=(good/total)*100;if(c.type==='geographic'){const sx=columnStats(xi),sy=columnStats(yi);if(sx.median>=-130&&sx.median<=-100&&sy.median>=45&&sy.median<=65)score+=30}else{const sx=columnStats(xi),sy=columnStats(yi);if(sy.median>4500000&&sy.median<7500000&&Math.abs(sx.median)>1000&&Math.abs(sx.median)<1500000)score+=15;else if(Math.abs(sx.median)<=1000)score-=80}
+    const text=(state.sourceName+' '+state.headers.join(' ')).toLowerCase();const key=familyKey(c).toLowerCase();if(/10\s*tm/.test(text)&&key.includes('10tm'))score+=25;if(/forest/.test(text)&&key.includes('forest'))score+=18;if(/resource/.test(text)&&key.includes('resource'))score+=18;const zm=text.match(/(?:utm|zone)[^0-9]*(10|11|12|13|14|15)/);if(zm&&key.includes(`zone ${zm[1]}`))score+=30;if(/3\s*tm/.test(text)&&key.includes('3tm'))score+=20;return score}
+  function regionLabel(lon,lat){
+    let ns=lat>=57?'northern':lat>=55?'north-central':lat>=52?'central':'southern';
+    let ew=lon<=-116.5?'western':lon>=-112.2?'eastern':'central';
+    if(ns==='central'&&ew==='central')return 'central Alberta';
+    if(ns==='northern'&&ew==='central')return 'northern Alberta';
+    if(ns==='southern'&&ew==='central')return 'southern Alberta';
+    return `${ns.replace('north-central','north')} ${ew} Alberta`;
+  }
+  function candidateLocation(code,xi,yi){
+    const c=getCrs(code);if(!c)return null;
+    for(const r of state.rows.slice(0,20)){
+      const x=num(r[xi]),y=num(r[yi]);if(!Number.isFinite(x)||!Number.isFinite(y))continue;
+      try{const ll=toGeographic(x,y,c);if(plausibleAlberta(ll[0],ll[1]))return {lon:ll[0],lat:ll[1],region:regionLabel(ll[0],ll[1])}}catch{}
+    }
+    return null;
+  }
+  function familyMatchesFromType(family){const hint=els.fromType.value;if(hint==='AUTO')return true;if(hint==='geographic')return family==='Geographic longitude/latitude';if(hint==='10tm')return family.startsWith('Alberta 10TM');if(hint==='utm')return family.startsWith('UTM Zone');if(hint==='3tm')return family.startsWith('Alberta 3TM');return true}
+  function clearGeographicPair(){
+    if(!(els.fromType.value==='AUTO'||els.fromType.value==='geographic'))return null;
+    const numeric=state.headers.map((_,i)=>({i,s:columnStats(i)})).filter(o=>o.s.fraction>=.75);
+    const options=[];
+    for(const a of numeric)for(const b of numeric){
+      if(a.i===b.i)continue;
+      const xs=a.s,ys=b.s;
+      if(xs.min < -180 || xs.max > 180 || ys.min < -90 || ys.max > 90)continue;
+      let total=0,direct=0,correctable=0;
+      for(const r of state.rows.slice(0,25)){
+        const lon=num(r[a.i]),lat=num(r[b.i]);
+        if(!Number.isFinite(lon)||!Number.isFinite(lat)||Math.abs(lon)>180||Math.abs(lat)>90)continue;
+        total++;
+        if(pointFitsExpectedLocation(lon,lat))direct++;
+        else if(lon>0&&pointFitsExpectedLocation(-lon,lat))correctable++;
+      }
+      if(!total)continue;
+      const obviousLongitude=Math.max(Math.abs(xs.min),Math.abs(xs.max))>90;
+      const headerBoost=headerScore(state.headers[a.i],'x')+headerScore(state.headers[b.i],'y');
+      const locationMatches=direct+correctable;
+      let score=headerBoost+(obviousLongitude?80:0)+(locationMatches/total)*100;
+      if(els.expectedLocation.value==='none'&&obviousLongitude)score+=30;
+      if(els.fromType.value==='geographic')score+=20;
+      if(score<45)continue;
+      options.push({xi:a.i,yi:b.i,score,family:'Decimal Degrees',sourceCode:'EPSG:4326',confidence:'High',requiresChoice:false,alternatives:[],choices:[],signCorrection:correctable>0&&correctable>=direct,correctableRows:correctable,totalRows:total});
+    }
+    options.sort((a,b)=>b.score-a.score);
+    return options[0]||null;
+  }
+  function detectInput(){
+    if(!state.sourceSpecific)state.selectedSourceCode=null;
+    if(!state.rows.length){state.detection=null;state.atsColumn=null;renderDetection();return}
+    if(!state.sourceSpecific&&(els.fromType.value==='AUTO'||els.fromType.value==='ats')){
+      const ai=detectAtsColumn();
+      if(ai!=null){state.atsColumn=ai;state.detection={isAts:true,atsColumn:ai,family:'Alberta Township System (ATS)',sourceCode:'ATS',confidence:'High',requiresChoice:false};state.selectedSourceCode='ATS';if(els.atsColumn)els.atsColumn.value=String(ai);renderDetection();refreshSimpleHelp();return}
+      if(els.fromType.value==='ats'){state.detection=null;state.atsColumn=null;renderDetection();return}
+    }
+    if(state.headers.length<2){state.detection=null;renderDetection();return}
+    if(!state.sourceSpecific){
+      const geo=clearGeographicPair();
+      if(geo){state.detection=geo;els.xColumn.value=String(geo.xi);els.yColumn.value=String(geo.yi);state.selectedSourceCode=geo.sourceCode;renderDetection();refreshSimpleHelp();return}
+    }
+    const numeric=state.headers.map((_,i)=>({i,s:columnStats(i)})).filter(o=>o.s.fraction>=.55).map(o=>o.i);let candidates=[];
+    for(const xi of numeric)for(const yi of numeric){if(xi===yi)continue;const axis=pairValueScore(xi,yi);if(axis<-100)continue;const familyScores=new Map();for(const c of crs){const key=familyKey(c);if(!familyMatchesFromType(key))continue;const sc=scoreCrsForPair(c,xi,yi);if(!familyScores.has(key)||sc>familyScores.get(key).score)familyScores.set(key,{score:sc,code:representativeCode(key),key})}for(const fs of familyScores.values())candidates.push({xi,yi,score:axis+fs.score,family:fs.key,sourceCode:fs.code})}
+    candidates.sort((a,b)=>b.score-a.score);if(!candidates.length){state.detection=null;renderDetection();return}
+    const best=candidates[0];const distinct=[];for(const c of candidates){if(c.xi===best.xi&&c.yi===best.yi&&!distinct.some(d=>d.family===c.family))distinct.push(c);if(distinct.length>=5)break}
+    const second=distinct[1];const gap=second?best.score-second.score:99;const confidence=best.score>=180&&gap>=35?'High':best.score>=145&&gap>=18?'Medium':'Low';
+    const requiresChoice=confidence!=='High'&&distinct.length>1;
+    state.detection={...best,confidence,requiresChoice,alternatives:distinct.slice(1,5),choices:distinct.slice(0,4)};
+    els.xColumn.value=String(best.xi);els.yColumn.value=String(best.yi);
+    if(!requiresChoice&&!state.sourceSpecific)state.selectedSourceCode=best.sourceCode;
+    renderDetection();refreshSimpleHelp();
+  }
+  function renderDetection(){
+    if(!els.autoDetection)return;
+    els.candidateArea.classList.add('hidden');els.candidateChoices.innerHTML='';els.candidateConfirmed.classList.add('hidden');els.candidateConfirmed.textContent='';
+    if(!state.detection){els.autoDetection.innerHTML=els.fromType.value==='ats'?'<strong>Waiting for an Alberta legal land description.</strong> Paste a legal location such as 14-32-95-11-W4M or upload a table containing legal locations.':'<strong>Waiting for coordinates.</strong> Paste a table or upload a CSV above.';return}
+    const d=state.detection;
+    if(d.isAts){const name=escapeHtml(state.headers[d.atsColumn]||'Legal land description');els.autoDetection.innerHTML=`<strong>Alberta Township System detected.</strong> We identified <strong>${name}</strong> as the legal land description field. When converting ATS to coordinates, the result is the centre of the matching official ATS parcel.`;return}
+    const xName=escapeHtml(state.headers[d.xi]), yName=escapeHtml(state.headers[d.yi]);
+    if(!d.requiresChoice){
+      if(d.signCorrection){
+        els.autoDetection.innerHTML=`<strong>Decimal Degrees detected.</strong> We identified <strong>${xName}</strong> as longitude and <strong>${yName}</strong> as latitude.<br><span style="color:#4d625a">Because the expected location is <strong>${escapeHtml(locationContextLabel())}</strong>, positive longitude values that fall inside that location when read as west will automatically be treated as negative. Your original table is not changed.</span>`;
+      }else{
+        els.autoDetection.innerHTML=`<strong>Input detected.</strong> We found the coordinate columns automatically and the coordinates match <strong>${escapeHtml(d.family)}</strong>.`;
+      }
+      return;
+    }
+    els.autoDetection.innerHTML=`<strong>Coordinate columns detected.</strong><br><span style="color:#6d6659">The numbers fit more than one Alberta coordinate system, so we need one simple location check before converting.</span>`;
+    els.candidateArea.classList.remove('hidden');
+    d.choices.forEach((choice,idx)=>{
+      const loc=candidateLocation(choice.sourceCode,d.xi,d.yi);if(!loc)return;
+      const b=document.createElement('button');b.type='button';b.className='candidate-button';b.dataset.code=choice.sourceCode;
+      b.innerHTML=`<strong>${escapeHtml(loc.region.charAt(0).toUpperCase()+loc.region.slice(1))}</strong><span>About ${Math.abs(loc.lat).toFixed(2)}° N, ${Math.abs(loc.lon).toFixed(2)}° W</span>`;
+      b.onclick=()=>{state.sourceSpecific=false;state.selectedSourceCode=choice.sourceCode;els.sourceCrs.value='AUTO';els.candidateChoices.querySelectorAll('.candidate-button').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');els.candidateConfirmed.textContent='Location selected. The converter can now use the matching coordinate system.';els.candidateConfirmed.classList.remove('hidden');updateSummary();updateReady();updateDatumWarning()};
+      els.candidateChoices.appendChild(b);
+    });
+    if(!els.candidateChoices.children.length){els.candidateArea.classList.add('hidden');els.autoDetection.innerHTML+='<br><strong>We could not safely identify the source system.</strong> Open Advanced options and select it manually.'}
+  }
+  function populateColumns(){
+    [els.xColumn,els.yColumn,els.atsColumn].forEach(sel=>{if(!sel)return;sel.innerHTML='';if(!state.headers.length){sel.innerHTML='<option value="">Load data first</option>';return}state.headers.forEach((h,i)=>{const o=document.createElement('option');o.value=String(i);o.textContent=h;sel.appendChild(o)})});
+    if(state.headers.length){els.xColumn.value='0';els.yColumn.value=String(Math.min(1,state.headers.length-1));if(els.atsColumn)els.atsColumn.value=String(state.atsColumn??0)}
+    updateInputControlVisibility();
+  }
+  function updateInputControlVisibility(){const atsMode=els.fromType.value==='ats'||state.selectedSourceCode==='ATS'||(state.detection&&state.detection.isAts);if(els.atsColumnWrap)els.atsColumnWrap.classList.toggle('hidden',!atsMode)}
+  els.swapColumns.onclick=()=>{if(!state.headers.length)return;const a=els.xColumn.value;els.xColumn.value=els.yColumn.value;els.yColumn.value=a;state.detection=null;state.selectedSourceCode=null;renderDetection();updateSummary();updateReady()};
+  [els.xColumn,els.yColumn].forEach(e=>e.addEventListener('change',()=>{state.detection=null;state.selectedSourceCode=null;renderDetection();updateSummary();updateReady()}));
+  if(els.atsColumn)els.atsColumn.addEventListener('change',()=>{state.atsColumn=els.atsColumn.value===''?null:Number(els.atsColumn.value);if(state.atsColumn!=null){state.detection={isAts:true,atsColumn:state.atsColumn,family:'Alberta Township System (ATS)',sourceCode:'ATS',confidence:'High',requiresChoice:false};state.selectedSourceCode='ATS'}renderDetection();updateSummary();updateReady()});
+  els.expectedLocation.addEventListener('change',()=>{
+    els.locationHelp.textContent=els.expectedLocation.value==='alberta'?'Alberta is used to catch common longitude sign issues. Positive longitude values are only changed to west/negative when the matching point falls in Alberta.':els.expectedLocation.value==='canada'?'Canada is used to catch common missing west/negative signs in decimal-degree longitudes. The sign is only corrected when the negative longitude fits within Canada.':'No longitude sign correction will be made automatically. Coordinates will be interpreted exactly as entered.';
+    state.selectedSourceCode=null;state.detection=null;detectInput();refreshSimpleHelp();updateSummary();updateReady();updateDatumWarning();
+  });
+  els.fromType.addEventListener('change',()=>{state.sourceSpecific=false;els.sourceCrs.value='AUTO';state.selectedSourceCode=null;state.atsColumn=null;detectInput();updateInputControlVisibility();refreshSimpleHelp();updateSummary();updateReady();updateDatumWarning()});
+  els.toType.addEventListener('change',()=>{state.targetSpecific=false;refreshSimpleHelp();updateSummary();updateReady();updateDatumWarning()});
+  els.sourceCrs.addEventListener('change',()=>{state.sourceSpecific=els.sourceCrs.value!=='AUTO';if(state.sourceSpecific){state.selectedSourceCode=els.sourceCrs.value;const c=getCrs(els.sourceCrs.value);if(c)els.fromType.value=crsTypeKey(c)}else{state.selectedSourceCode=null;detectInput()}refreshSimpleHelp();updateSummary();updateReady();updateDatumWarning()});
+  els.targetCrs.addEventListener('change',()=>{state.targetSpecific=true;const c=getCrs(els.targetCrs.value);if(c)els.toType.value=outputKeyForCrs(c);refreshSimpleHelp();updateSummary();updateReady();updateDatumWarning()});
+
+  function renderInputPreview(){if(!state.rows.length){els.inputPreview.innerHTML='<div class="empty-preview">No coordinate rows found.</div>';return}const max=6;let html='<table><thead><tr>'+state.headers.map(h=>`<th>${escapeHtml(h)}</th>`).join('')+'</tr></thead><tbody>';state.rows.slice(0,max).forEach(r=>{html+='<tr>'+state.headers.map((_,i)=>`<td>${escapeHtml(r[i]??'')}</td>`).join('')+'</tr>'});html+='</tbody></table>';if(state.rows.length>max)html+=`<div class="empty-preview">Previewing ${max} of ${state.rows.length} rows.</div>`;els.inputPreview.innerHTML=html}
+  function escapeHtml(s){return String(s).replace(/[&<>"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]))}
+  function shortName(c){return c?`${c.code.replace('EPSG:','')} ${c.name}`:'Not selected'}
+  function updateSummary(){const src=activeSource(),tgt=resolvedTarget(),atsInput=src&&src.type==='ats';els.summaryInput.textContent=state.sourceName||'No data loaded';els.summarySub.textContent=state.rows.length?`${state.headers.length} columns detected`:'Paste coordinates or upload a CSV.';els.summaryRows.textContent=String(state.rows.length);els.summarySource.textContent=state.sourceSpecific?shortName(src):(src?typeLabel(crsTypeKey(src)):(state.detection&&state.detection.requiresChoice?'Confirm location':typeLabel(els.fromType.value)));els.summaryTarget.textContent=state.targetSpecific?shortName(tgt):outputLabel();els.summaryX.textContent=atsInput?(state.headers[state.atsColumn]||'Legal land description'):(state.headers[Number(els.xColumn.value)]||'Not set');els.summaryY.textContent=atsInput?'Not applicable':(state.headers[Number(els.yColumn.value)]||'Not set')}
+  function updateReady(){const src=activeSource(),atsInput=src&&src.type==='ats';const inputOk=atsInput?state.atsColumn!=null:(els.xColumn.value!==''&&els.yColumn.value!==''&&els.xColumn.value!==els.yColumn.value);const ok=state.rows.length>0&&inputOk&&!!src&&!!resolvedTarget();els.convertButton.disabled=!ok;els.readyTitle.textContent=ok?`${state.rows.length} ${atsInput?'legal location':'coordinate'} row${state.rows.length===1?'':'s'} ready to convert.`:(state.detection&&state.detection.requiresChoice&&!src?'Choose the approximate project location above.':atsInput?'Add an Alberta legal land description to continue.':'Add a coordinate table to continue.');els.statusPill.textContent=ok?'Ready':(state.detection&&state.detection.requiresChoice?'Check location':'Waiting')}
+  function updateDatumWarning(){const s=activeSource(),t=resolvedTarget();if(s&&t&&s.type!=='ats'&&t.type!=='ats'&&s.datum!==t.datum){els.datumWarning.textContent='Datum note: the source and output use different datums. This browser tool does not apply NADCON/NTv2 or time-dependent datum transformation grids. Use ArcGIS Pro with the appropriate geographic transformation when survey-grade or sub-metre datum accuracy matters.';els.datumWarning.classList.remove('hidden')}else els.datumWarning.classList.add('hidden')}
+
+  function ellipsoidParams(ell){const f=1/ell.rf;const e2=f*(2-f);return {a:ell.a,f,e2,ep2:e2/(1-e2)}}
+  function meridionalArc(phi,p){const {a,e2}=p;const e4=e2*e2,e6=e4*e2;return a*((1-e2/4-3*e4/64-5*e6/256)*phi-(3*e2/8+3*e4/32+45*e6/1024)*Math.sin(2*phi)+(15*e4/256+45*e6/1024)*Math.sin(4*phi)-(35*e6/3072)*Math.sin(6*phi))}
+  function forwardTM(lonDeg,latDeg,c){const p=ellipsoidParams(c.ellipsoid),rad=Math.PI/180;const phi=latDeg*rad,lam=lonDeg*rad,lam0=c.lon0*rad,phi0=(c.lat0||0)*rad;const sin=Math.sin(phi),cos=Math.cos(phi),tan=Math.tan(phi);const N=p.a/Math.sqrt(1-p.e2*sin*sin),T=tan*tan,C=p.ep2*cos*cos,A=cos*(lam-lam0);const M=meridionalArc(phi,p),M0=meridionalArc(phi0,p);const x=c.x0+c.k0*N*(A+(1-T+C)*A**3/6+(5-18*T+T*T+72*C-58*p.ep2)*A**5/120);const y=c.y0+c.k0*((M-M0)+N*tan*(A*A/2+(5-T+9*C+4*C*C)*A**4/24+(61-58*T+T*T+600*C-330*p.ep2)*A**6/720));return [x,y]}
+  function inverseTM(x,y,c){const p=ellipsoidParams(c.ellipsoid),rad=Math.PI/180;const M0=meridionalArc((c.lat0||0)*rad,p),M=M0+(y-c.y0)/c.k0;const mu=M/(p.a*(1-p.e2/4-3*p.e2**2/64-5*p.e2**3/256));const e1=(1-Math.sqrt(1-p.e2))/(1+Math.sqrt(1-p.e2));const phi1=mu+(3*e1/2-27*e1**3/32)*Math.sin(2*mu)+(21*e1**2/16-55*e1**4/32)*Math.sin(4*mu)+(151*e1**3/96)*Math.sin(6*mu)+(1097*e1**4/512)*Math.sin(8*mu);const sin=Math.sin(phi1),cos=Math.cos(phi1),tan=Math.tan(phi1);const C1=p.ep2*cos*cos,T1=tan*tan,N1=p.a/Math.sqrt(1-p.e2*sin*sin),R1=p.a*(1-p.e2)/Math.pow(1-p.e2*sin*sin,1.5),D=(x-c.x0)/(N1*c.k0);const lat=phi1-(N1*tan/R1)*(D*D/2-(5+3*T1+10*C1-4*C1*C1-9*p.ep2)*D**4/24+(61+90*T1+298*C1+45*T1*T1-252*p.ep2-3*C1*C1)*D**6/720);const lon=c.lon0*rad+(D-(1+2*T1+C1)*D**3/6+(5-2*C1+28*T1-3*C1*C1+8*p.ep2+24*T1*T1)*D**5/120)/cos;return [lon/rad,lat/rad]}
+  function toGeographic(x,y,c){if(c.type==='geographic')return [x,y];return inverseTM(x,y,c)}
+  function fromGeographic(lon,lat,c){if(c.type==='geographic')return [lon,lat];return forwardTM(lon,lat,c)}
+  function num(v){if(typeof v==='number')return v;let s=String(v??'').trim();if(!s)return NaN;s=s.replace(/\s/g,'');if(/^[-+]?\d{1,3}(,\d{3})+(\.\d+)?$/.test(s))s=s.replace(/,/g,'');return Number(s)}
+  function dms(value,isLat){const hemi=value<0?(isLat?'S':'W'):(isLat?'N':'E');let a=Math.abs(value),deg=Math.floor(a),minFloat=(a-deg)*60,min=Math.floor(minFloat),sec=(minFloat-min)*60;return `${deg}° ${String(min).padStart(2,'0')}' ${sec.toFixed(3).padStart(6,'0')}" ${hemi}`}
+  function ddm(value,isLat){const hemi=value<0?(isLat?'S':'W'):(isLat?'N':'E');let a=Math.abs(value),deg=Math.floor(a),minutes=(a-deg)*60;return `${deg}° ${minutes.toFixed(6).padStart(9,'0')}' ${hemi}`}
+  function mgrsBand(lat){if(lat<-80||lat>84)throw new Error('MGRS is only defined between 80°S and 84°N');const bands='CDEFGHJKLMNPQRSTUVWX';return bands[Math.min(19,Math.floor((lat+80)/8))]}
+  function mgrs100k(zone,easting,northing){
+    const colSets=['ABCDEFGH','JKLMNPQR','STUVWXYZ'];const rowLetters='ABCDEFGHJKLMNPQRSTUV';
+    const colNum=Math.floor(easting/100000);if(colNum<1||colNum>8)throw new Error('Coordinate is outside the valid UTM easting range for MGRS');
+    const col=colSets[(zone-1)%3][colNum-1];let rowIndex=Math.floor(northing/100000)%20;if(zone%2===0)rowIndex=(rowIndex+5)%20;return col+rowLetters[rowIndex];
+  }
+  function mgrsParts(lon,lat,precision=5){
+    if(lat<0)throw new Error('This version currently supports MGRS/USNG north of the equator');
+    const zone=utmZoneFor(lon,lat),utm=dynamicWgs84Utm(zone),xy=fromGeographic(lon,lat,utm),band=mgrsBand(lat),sq=mgrs100k(zone,xy[0],xy[1]);
+    const scale=Math.pow(10,5-precision);const e=Math.floor((xy[0]%100000)/scale),n=Math.floor((xy[1]%100000)/scale);return {zone,band,sq,e:String(e).padStart(precision,'0'),n:String(n).padStart(precision,'0')};
+  }
+  function mgrsString(lon,lat){const p=mgrsParts(lon,lat,5);return `${p.zone}${p.band}${p.sq}${p.e}${p.n}`}
+  function usngString(lon,lat){const p=mgrsParts(lon,lat,5);return `${p.zone}${p.band} ${p.sq} ${p.e} ${p.n}`}
+  function outputFieldNames(spec){
+    if(spec.kind==='dd')return ['Longitude_Degrees','Latitude_Degrees'];
+    if(spec.kind==='dms')return ['Longitude_DMS','Latitude_DMS'];
+    if(spec.kind==='ddm')return ['Longitude_DDM','Latitude_DDM'];
+    if(spec.kind==='mgrs')return ['MGRS'];
+    if(spec.kind==='usng')return ['USNG'];
+    if(spec.kind==='ats')return ['ATS_Legal_Land_Description'];
+    const suffix=spec.unit==='Meters'?'Meters':spec.unit==='Feet'?'Feet':'US_Feet';return [`Easting_${suffix}`,`Northing_${suffix}`];
+  }
+  function formatProjected(v,spec){return (v*spec.factor).toFixed(3)}
+
+  function formatAtsDescription(a){
+    const m=Number(a.m??a.M),rge=Number(a.rge??a.RGE),twp=Number(a.twp??a.TWP),sec=Number(a.sec??a.SEC),ls=Number(a.ls??a.LS);const qs=String(a.qs??a.QS??'').trim().toUpperCase();
+    if(Number.isInteger(ls)&&ls>=1&&ls<=16)return `${ls}-${sec}-${twp}-${rge}-W${m}M`;
+    if(['NE','NW','SE','SW'].includes(qs))return `${qs}-${sec}-${twp}-${rge}-W${m}M`;
+    if(Number.isInteger(sec)&&Number.isInteger(twp)&&Number.isInteger(rge)&&Number.isInteger(m))return `SEC-${sec}-${twp}-${rge}-W${m}M`;
+    return String(a.DESCRIPTOR||a.descriptor||'').trim();
+  }
+  function atsWhere(d){
+    const parts=[`M=${d.m}`,`RGE=${d.rge}`,`TWP=${d.twp}`,`SEC=${d.sec}`];
+    if(d.level==='lsd')parts.push(`LS=${d.ls}`);else if(d.level==='quarter')parts.push(`QS='${d.qs}'`);
+    return parts.join(' AND ');
+  }
+  function atsLayerInfo(d){
+    if(d.level==='lsd')return {id:20,fields:'M,RGE,TWP,SEC,QS,LS,RA,DESCRIPTOR'};
+    if(d.level==='quarter')return {id:19,fields:'M,RGE,TWP,SEC,QS,RA,DESCRIPTOR'};
+    return {id:15,fields:'M,RGE,TWP,SEC,RA,DESCRIPTOR'};
+  }
+  function arcgisJsonp(url,params){
+    return new Promise((resolve,reject)=>{const cb='__ats_cb_'+Date.now()+'_'+Math.random().toString(36).slice(2);const script=document.createElement('script');const timer=setTimeout(()=>cleanup(new Error('The Alberta Township System service did not respond.')),20000);function cleanup(err,data){clearTimeout(timer);try{delete window[cb]}catch{}script.remove();err?reject(err):resolve(data)}window[cb]=data=>cleanup(null,data);params.set('f','json');params.set('callback',cb);script.onerror=()=>cleanup(new Error('The Alberta Township System service could not be reached.'));script.src=url+'?'+params.toString();document.head.appendChild(script)})
+  }
+  async function atsServiceQuery(layerId,paramsObj){
+    const url=`${ATS_SERVICE}/${layerId}/query`;const params=new URLSearchParams({...paramsObj,f:'json'});
+    try{const res=await fetch(url+'?'+params.toString(),{method:'GET',mode:'cors',credentials:'omit'});if(!res.ok)throw new Error(`ATS service returned ${res.status}`);const data=await res.json();if(data.error)throw new Error(data.error.message||'ATS service query failed');return data}
+    catch(fetchError){const p=new URLSearchParams(params);p.delete('f');try{const data=await arcgisJsonp(url,p);if(data&&data.error)throw new Error(data.error.message||'ATS service query failed');return data}catch{throw new Error('The Government of Alberta ATS service could not be reached. Check the internet connection and try again.')}}
+  }
+  function ringCentroid(ring){let a=0,cx=0,cy=0;if(!Array.isArray(ring)||ring.length<3)return null;for(let i=0,j=ring.length-1;i<ring.length;j=i++){const x0=Number(ring[j][0]),y0=Number(ring[j][1]),x1=Number(ring[i][0]),y1=Number(ring[i][1]);const cross=x0*y1-x1*y0;a+=cross;cx+=(x0+x1)*cross;cy+=(y0+y1)*cross}a/=2;if(Math.abs(a)<1e-15)return null;return {area:a,cx:cx/(6*a),cy:cy/(6*a)}}
+  function polygonCentroid(geometry){
+    const rings=geometry&&geometry.rings;if(!Array.isArray(rings)||!rings.length)throw new Error('ATS parcel geometry was not returned');let area=0,cx=0,cy=0,pts=[];
+    for(const ring of rings){for(const p of ring)pts.push(p);const c=ringCentroid(ring);if(!c)continue;area+=c.area;cx+=c.cx*c.area;cy+=c.cy*c.area}
+    if(Math.abs(area)>1e-15)return [cx/area,cy/area];if(pts.length){const xs=pts.map(p=>Number(p[0])),ys=pts.map(p=>Number(p[1]));return [(Math.min(...xs)+Math.max(...xs))/2,(Math.min(...ys)+Math.max(...ys))/2]}
+    throw new Error('ATS parcel geometry was empty');
+  }
+  function preferredAtsFeature(features){if(!Array.isArray(features)||!features.length)return null;return features.find(f=>!String(f.attributes&&f.attributes.RA||'').trim())||features[0]}
+  async function atsDescriptionToLonLat(raw){
+    const d=parseAtsDescription(raw);if(!d)throw new Error('Legal land description not recognized. Try formats such as 14-32-95-11-W4M, NE-9-73-17-W4M, or SEC-15-73-17-W4M.');
+    const layer=atsLayerInfo(d);const data=await atsServiceQuery(layer.id,{where:atsWhere(d),outFields:layer.fields,returnGeometry:'true',outSR:'4326',resultRecordCount:'20'});const feature=preferredAtsFeature(data.features);if(!feature)throw new Error('No matching Alberta Township System parcel was found. Check the legal land description.');const ll=polygonCentroid(feature.geometry);return {lon:ll[0],lat:ll[1],canonical:formatAtsDescription(feature.attributes||d)};
+  }
+  async function atsPointQuery(layerId,fields,lon,lat){
+    const geom=JSON.stringify({x:lon,y:lat,spatialReference:{wkid:4326}});const data=await atsServiceQuery(layerId,{where:'1=1',geometry:geom,geometryType:'esriGeometryPoint',inSR:'4326',spatialRel:'esriSpatialRelIntersects',outFields:fields,returnGeometry:'false',resultRecordCount:'20'});return data.features||[];
+  }
+  async function lonLatToAts(lon,lat){
+    if(!Number.isFinite(lon)||!Number.isFinite(lat)||lon<-121||lon>-109||lat<48||lat>61)throw new Error('Point is outside the Alberta Township System coverage area.');
+    let features=await atsPointQuery(20,'M,RGE,TWP,SEC,QS,LS,RA,DESCRIPTOR',lon,lat);const hasLsd=x=>{const v=Number(x.attributes&&x.attributes.LS);return Number.isInteger(v)&&v>=1&&v<=16};let lsdFeatures=features.filter(x=>hasLsd(x)&&!String(x.attributes&&x.attributes.RA||'').trim());if(!lsdFeatures.length)lsdFeatures=features.filter(hasLsd);if(lsdFeatures.length){const labels=[...new Set(lsdFeatures.map(x=>formatAtsDescription(x.attributes||{})).filter(Boolean))];if(labels.length)return labels.join(' / ')}
+    let f=preferredAtsFeature(features);if(f){const label=String(f.attributes&&f.attributes.DESCRIPTOR||'').trim();if(label)return label}
+    features=await atsPointQuery(19,'M,RGE,TWP,SEC,QS,RA,DESCRIPTOR',lon,lat);f=preferredAtsFeature(features);if(f){const label=formatAtsDescription(f.attributes||{})||String(f.attributes&&f.attributes.DESCRIPTOR||'').trim();if(label)return label}
+    features=await atsPointQuery(15,'M,RGE,TWP,SEC,RA,DESCRIPTOR',lon,lat);f=preferredAtsFeature(features);if(f){const label=formatAtsDescription(f.attributes||{})||String(f.attributes&&f.attributes.DESCRIPTOR||'').trim();if(label)return label}
+    throw new Error('No Alberta Township System legal location was found for this point.');
+  }
+  function targetForLonLat(spec,lon,lat){
+    if(state.targetSpecific)return getCrs(els.targetCrs.value);
+    if(spec.family==='geographic')return getCrs('EPSG:4326');
+    if(spec.family==='10tm')return getCrs('EPSG:3400');
+    if(spec.family==='utm'){const z=utmZoneFor(lon,lat);return getCrs(`EPSG:${26900+z}`)||dynamicNad83Utm(z)}
+    if(spec.family==='3tm'){const lon0=[-111,-114,-117,-120].reduce((a,b)=>Math.abs(lon-a)<=Math.abs(lon-b)?a:b);const code={[-111]:3775,[-114]:3776,[-117]:3777,[-120]:3801}[lon0];return getCrs(`EPSG:${code}`)}
+    return getCrs('EPSG:4326');
+  }
+  async function mapWithConcurrency(items,limit,fn){const out=new Array(items.length);let next=0;async function worker(){while(true){const i=next++;if(i>=items.length)return;out[i]=await fn(items[i],i)}}await Promise.all(Array.from({length:Math.min(limit,items.length)},worker));return out}
+
+  els.convertButton.onclick=async()=>{
+    hideNotice();const src=activeSource(),spec=outputSpec(),xi=Number(els.xColumn.value),yi=Number(els.yColumn.value),ai=state.atsColumn;
+    const atsInput=src&&src.type==='ats';if(!src||!state.rows.length||(atsInput?ai==null:(xi===yi||els.xColumn.value===''||els.yColumn.value==='')))return;
+    const names=outputFieldNames(spec),headers=[...state.headers,...names,'Conversion_Error'];let errors=0,signCorrections=0;
+    const oldText=els.convertButton.textContent;els.convertButton.disabled=true;els.convertButton.textContent=(atsInput||spec.kind==='ats')?'Checking Alberta ATS…':'Converting…';els.statusPill.textContent='Converting';
+    try{
+      const out=await mapWithConcurrency(state.rows,6,async row=>{
+        let extras=[],err='';try{
+          let lon,lat;
+          if(atsInput){const found=await atsDescriptionToLonLat(row[ai]);lon=found.lon;lat=found.lat}
+          else{
+            let x=num(row[xi]),y=num(row[yi]);if(!Number.isFinite(x)||!Number.isFinite(y))throw new Error('Invalid coordinate value');
+            if(src.type==='geographic'){if(Math.abs(x)>180||Math.abs(y)>90)throw new Error('Geographic input is outside valid longitude/latitude range');const n=normalizeGeographicInput(x,y);x=n.lon;y=n.lat;if(n.corrected)signCorrections++}
+            const ll=toGeographic(x,y,src);lon=ll[0];lat=ll[1];if(!Number.isFinite(lon)||!Number.isFinite(lat)||Math.abs(lat)>90)throw new Error('Coordinate could not be transformed');
+          }
+          if(spec.kind==='dd')extras=[lon.toFixed(8),lat.toFixed(8)];
+          else if(spec.kind==='dms')extras=[dms(lon,false),dms(lat,true)];
+          else if(spec.kind==='ddm')extras=[ddm(lon,false),ddm(lat,true)];
+          else if(spec.kind==='mgrs')extras=[mgrsString(lon,lat)];
+          else if(spec.kind==='usng')extras=[usngString(lon,lat)];
+          else if(spec.kind==='ats')extras=[await lonLatToAts(lon,lat)];
+          else {const rowTarget=targetForLonLat(spec,lon,lat);const xy=fromGeographic(lon,lat,rowTarget);extras=[formatProjected(xy[0],spec),formatProjected(xy[1],spec)]}
+        }catch(e){err=e.message||'Conversion failed';errors++;extras=names.map(()=> '')}
+        return [...row,...extras,err]
+      });
+      state.resultHeaders=headers;state.resultRows=out;renderResults(errors,signCorrections);els.resultsCard.classList.remove('hidden');els.resultsCard.scrollIntoView({behavior:'smooth',block:'start'});els.statusPill.textContent=errors?`${errors} issue${errors===1?'':'s'}`:(signCorrections?`${signCorrections} sign fixed`:'Converted');
+    }finally{els.convertButton.textContent=oldText;updateReady()}
+  };
+  function renderResults(errors,signCorrections=0){let html='<table class="results-table"><thead><tr>'+state.resultHeaders.map(h=>`<th>${escapeHtml(h)}</th>`).join('')+'</tr></thead><tbody>';state.resultRows.forEach(r=>{html+='<tr>'+r.map((v,i)=>`<td${i===r.length-1&&v?' class="result-error"':''}>${escapeHtml(v)}</td>`).join('')+'</tr>'});html+='</tbody></table>';els.resultsWrap.innerHTML=html;if(errors)els.resultsTitle.textContent=`Converted with ${errors} row issue${errors===1?'':'s'}`;else if(signCorrections)els.resultsTitle.textContent=`${state.resultRows.length} row${state.resultRows.length===1?'':'s'} converted · ${signCorrections} longitude sign${signCorrections===1?'':'s'} corrected`;else els.resultsTitle.textContent=`${state.resultRows.length} row${state.resultRows.length===1?'':'s'} converted`}
+  function csvEscape(v){const s=String(v??'');return /[",\r\n]/.test(s)?`"${s.replace(/"/g,'""')}"`:s}
+  function resultCsv(delim=','){return [state.resultHeaders,...state.resultRows].map(r=>r.map(csvEscape).join(delim)).join('\r\n')}
+  els.downloadCsv.onclick=()=>{if(!state.resultRows.length)return;const blob=new Blob(['\uFEFF'+resultCsv()],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;const src=activeSource(),tgt=resolvedTarget();a.download=`Coordinates_${src.code.replace(':','-')}_to_${els.toType.value}.csv`;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)};
+  els.copyResults.onclick=async()=>{if(!state.resultRows.length)return;const tsv=[state.resultHeaders,...state.resultRows].map(r=>r.join('\t')).join('\n');try{await navigator.clipboard.writeText(tsv);const old=els.copyResults.textContent;els.copyResults.textContent='Copied';setTimeout(()=>els.copyResults.textContent=old,1200)}catch{showNotice('Your browser blocked clipboard access. Use Download CSV instead.')}};
+
+  refreshSimpleHelp();renderDetection();updateSummary();updateReady();updateDatumWarning();
+})();
+</script>
+</body>
 </html>
