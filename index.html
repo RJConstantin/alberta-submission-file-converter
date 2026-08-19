@@ -14,11 +14,30 @@
       .brand-mark::before{content:"";width:20px;height:20px;display:block;background:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 3.5h7l4 4V20a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z'/%3E%3Cpath d='M14 3.5V8h4'/%3E%3Cpath d='m9 14 2 2 4-4'/%3E%3C/svg%3E")}
       .internal-dot{background:#4f86b8!important}
       .primary-button:hover{background:#174a78!important}
+      .site-back{color:#2463a0!important;font-size:13px!important;font-weight:700!important;text-decoration:none!important}
       .site-disclaimer{border-top:1px solid #dce3e1;color:#6f7c88;max-width:1290px;margin:0 auto;padding:24px 30px 32px;font-size:11px;line-height:1.55;font-family:Arial,Helvetica,sans-serif}
     </style>
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      (() => {
+        const addBackLink = () => {
+          const current = document.querySelector('.internal');
+          if (!current || current.dataset.backLinkReady === 'true') return;
+          const link = document.createElement('a');
+          link.className = 'internal site-back';
+          link.href = 'https://rjconstantin.github.io/alberta-gis-tools/';
+          link.textContent = 'Back to tools';
+          link.dataset.backLinkReady = 'true';
+          current.replaceWith(link);
+        };
+        const root = document.getElementById('root');
+        const observer = new MutationObserver(addBackLink);
+        observer.observe(root, { childList: true, subtree: true });
+        addBackLink();
+      })();
+    </script>
     <footer class="site-disclaimer"><strong>Disclaimer:</strong> These browser based GIS tools are intended for preliminary screening, data preparation and general reference. Results depend on the accuracy, completeness, availability and currency of the source data and services. Verify outputs against the applicable authoritative source before using them for regulatory submissions, surveying, field decisions or other professional work.</footer>
   </body>
 </html>
